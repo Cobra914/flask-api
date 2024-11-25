@@ -57,3 +57,33 @@ def leer_movimiento(id):
         status_code = 500
 
     return jsonify(resultado), status_code
+
+
+@app.route('/api/v1/movimientos/<int:id>', methods=['DELETE'])
+def eliminar_movimiento(id):
+    try:
+        db = DBManager(RUTA_DB)
+        mov = db.obtenerMovimiento(id)
+
+        if mov:
+            se_ha_borrado = db.borrar(id)
+            if se_ha_borrado:
+                resultado = {
+                    'status': 'success',
+                    'results': mov
+                }
+                status_code = 200
+        else:
+            resultado = {
+                'status': 'error',
+                'message': f'El movimiento con ID={id} no existe. No se ha podido borrar.'
+            }
+            status_code = 404
+    except Exception as ex:
+        resultado = {
+            'status': 'error',
+            'message': 'Algo ha ido mal...'
+        }
+        status_code = 500
+
+    return resultado, status_code

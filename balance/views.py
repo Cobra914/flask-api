@@ -21,13 +21,15 @@ def inicio():
             'status': 'success',
             'results': movs
         }
+        status_code = 200
     except Exception as ex:
         resultado = {
             'status': 'error',
             'message': str(ex)
         }
+        status_code = 500
 
-    return jsonify(resultado)
+    return jsonify(resultado), status_code
 
 
 @app.route('/api/v1/movimientos/<int:id>')

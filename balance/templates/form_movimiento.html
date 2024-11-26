@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+<h1>Modificar movimiento</h1>
+{% endblock page_title %}
+
+{% block contenido %}
+
+<!--{% if form.errors %}
+<div class="errores">
+    <p>
+        El formulario tiene errores. Puedes corregirlos?
+    </p>
+    <ul>
+        {% for errors in form.errors.items() %}
+        <li>
+            {{ errors[0] }} tiene errores:
+            <ul>
+                {% for msj in errors[1] %}
+                <li>{{ msj }}</li>
+                {% endfor %}
+            </ul>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}-->
+
+<form action="/editar/{{ id }}" method="post" novalidate>
+    {{ form.csrf_token }}
+    {{ form.id }}
+
+
+    <!-- Fecha -->
+    <div class="campo-formulario">
+        {{ form.fecha.label }}
+        {{ form.fecha }}
+        <p class="error">
+            {% if form.fecha.errors %}
+            {% for error in form.fecha.errors %}
+            {{ error }}
+            {% endfor %}
+            {% endif %}
+        </p>
+    </div>
+
+    <!-- Concepto -->
+    <div class="campo-formulario">
+        {{ form.concepto.label }}
+        {{ form.concepto }}
+        <p class="error">
+            {% if form.concepto.errors %}
+            {% for error in form.concepto.errors %}
+            {{ error }}
+            {% endfor %}
+            {% endif %}
+        </p>
+    </div>
+
+    <!-- Tipo -->
+    <div class="campo-formulario">
+        {% for campo in form.tipo %}
+        {{ campo }}
+        {{ campo.label }}
+        {% endfor %}
+    </div>
+
+    <!-- Cantidad -->
+    <div class="campo-formulario">
+        {{ form.cantidad.label }}
+        {{ form.cantidad }}
+        <p class="error">
+            {% if form.cantidad.errors %}
+            {% for error in form.cantidad.errors %}
+            {{ error }}
+            {% endfor %}
+            {% endif %}
+        </p>
+    </div>
+
+    <!-- Bonton de enviar -->
+    <div class="campo-formulario">
+        {{ form.submit }}
+    </div>
+</form>
+
+{% endblock contenido %}

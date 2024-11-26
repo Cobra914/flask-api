@@ -1,5 +1,11 @@
 const peticion = new XMLHttpRequest();
 
+function borrarMovimiento(evento) {
+    const target = evento.target;
+    const id = target.getAttribute('data-id');
+    console.log('Has pulsado el icono de la papelera', id);
+}
+
 
 function cargarMovimientos() {
     console.log('Has llamado a la función para cargar los movimientos');
@@ -28,7 +34,7 @@ function cargarMovimientos() {
                     <a href="/editar/${mov.id}" class="mini-boton">
                         <img src="/static/icons/editar.png" alt="Editar">
                     </a>
-                    <a href="/eliminar/${mov.id}" class="mini-boton">&times;</a>
+                    <a class="mini-boton delete" data-id="${mov.id}">&times;</a>
                 </td>
             </tr>
         `;
@@ -37,13 +43,27 @@ function cargarMovimientos() {
     const tabla = document.querySelector('#cuerpo-tabla');
     tabla.innerHTML = html;
 
+    const botonBorrar = document.querySelectorAll('.mini-boton.delete');
+    console.log('Botones', botonBorrar);
+    //botonBorrar.forEach(
+    //    (btn) => btn.addEventListener('click', borrarMovimiento)
+    //)
+    botonBorrar.forEach(
+        function (btn) {
+            btn.addEventListener('click', borrarMovimiento);
+        }
+    )
+
 }
 
 window.onload = function () {
     console.log('Ya se han cargado los elementos de la página');
+
     const boton = document.getElementById('boton-recarga');
     boton.addEventListener('click', cargarMovimientos);
-    cargarMovimientos();
+
+    cargarMovimientos()
+
     console.log('FIN de la función "window.oload"');
 }
 

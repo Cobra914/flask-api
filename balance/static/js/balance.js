@@ -1,10 +1,11 @@
 const peticion = new XMLHttpRequest();
+const locale = 'es-ES';
 
 function borrarMovimiento(evento) {
     const target = evento.target;
     const id = target.getAttribute('data-id');
 
-    const borrar = confirm('Seguro que quieres eliminar el movimiento?');
+    const borrar = confirm(`Seguro que quieres eliminar el movimiento ${id}?`);
     if (!borrar) {
         return;
     }
@@ -38,12 +39,33 @@ function cargarMovimientos() {
 
     for (let i = 0; i < movimientos.length; i++) {
         const mov = movimientos[i];
+
+        const fecha = new Date(mov.fecha);
+        const fechaFormateada = fecha.toLocaleDateString(locale);
+
+
+        if (mov.tipo === 'G') {
+            mov.tipo = 'Gasto';
+        } else if (mov.tipo === 'I') {
+            mov.tipo = 'Ingreso';
+        } else {
+            mov.tipo = '---'
+        }
+
+        const opciones = {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+        }
+
+        const formateador = new Intl.NumberFormat(locale, opciones);
+        const cantidad = formateador.format(mov.cantidad)
+
         html = html + `
             <tr class="fila">
-                <td class="dato">${mov.fecha}</td>
+                <td class="dato">${fechaFormateada}</td>
                 <td class="dato">${mov.concepto}</td>
                 <td class="dato">${mov.tipo}</td>
-                <td class="dato">${mov.cantidad}</td>
+                <td class="dato">${cantidad}</td>
                 <td class="acciones">
                     <a href="/editar/${mov.id}" class="mini-boton">
                         <img src="/static/icons/editar.png" alt="Editar">

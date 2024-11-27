@@ -3,7 +3,21 @@ const peticion = new XMLHttpRequest();
 function borrarMovimiento(evento) {
     const target = evento.target;
     const id = target.getAttribute('data-id');
-    console.log('Has pulsado el icono de la papelera', id);
+
+    const borrar = confirm('Seguro que quieres eliminar el movimiento?');
+    if (!borrar) {
+        return;
+    }
+
+    peticion.open('DELETE', `http://127.0.0.1:5000/api/v1/movimientos/${id}`, false);
+    peticion.send();
+    const resultado = JSON.parse(peticion.responseText);
+    console.log('Resultado:', peticion.status, peticion.statusText, resultado);
+    if (peticion.status === 200) {
+        cargarMovimientos();
+    } else {
+        alert('El movimiento no se ha podido borrar');
+    }
 }
 
 
